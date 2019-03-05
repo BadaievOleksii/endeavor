@@ -1,0 +1,24 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <ActivityId CorrelationId="283f8250-4ab7-40f4-bd5f-d28901efb141"
+                    xmlns="http://schemas.microsoft.com/2004/09/ServiceModel/Diagnostics">
+            4c5c8d9b-a744-41b4-a3c0-131a187e6ee0
+        </ActivityId>
+    </s:Header>
+    <s:Body>
+        <GetPacksForGoodsProductResponse xmlns="http://hp.com/services/sales/crest/cpc/pqws">
+            <GetPacksForGoodsProductResult
+                    xmlns:a="http://schemas.datacontract.org/2004/07/WebServicesPrj.CPCServiceLayer.ValueObjects">
+                <a:CountryCode>NL</a:CountryCode>
+                <a:CrestResult>
+                    <a:CountryDetails>
+                        <a:LocalPriceCurrencyCode>EUR</a:LocalPriceCurrencyCode>
+                    </a:CountryDetails>
+                </a:CrestResult>
+                <a:ErrorCode>200</a:ErrorCode>
+                <a:HwProductNumber>A7487A</a:HwProductNumber>
+                <a:Locale>nl</a:Locale>
+            </GetPacksForGoodsProductResult>
+        </GetPacksForGoodsProductResponse>
+    </s:Body>
+</s:Envelope>

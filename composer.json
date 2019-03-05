@@ -1,0 +1,56 @@
+{
+  "name": "sornemus/endeavor",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "email": "sornemus71@gmail.com",
+      "name": "Badayev Alexey"
+    }
+  ],
+  "description": "PHP library, abstracting the messaging workflow with RabbitMQ message broker",
+  "require": {
+    "php": "^5.6 | ^7.1",
+    "enqueue/amqp-bunny": "^0.8.4",
+    "monolog/monolog": "^1.22",
+    "mtdowling/cron-expression": "^1.2",
+    "symfony/config": "^3.4",
+    "symfony/console": "^3.4",
+    "symfony/dependency-injection": "^3.4",
+    "symfony/monolog-bundle": "^3.3",
+    "symfony/options-resolver": "^3.4",
+    "symfony/process": "^3.4",
+    "symfony/property-access": "^3.4",
+    "symfony/serializer": "^3.4",
+    "symfony/var-dumper": "^3.4",
+    "symfony/yaml": "^3.4",
+    "zordius/lightncandy": "^1.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "2.3.7",
+    "mockery/mockery": "^1.0",
+    "enqueue/enqueue": "^0.8.8",
+
+    "doctrine/dbal": "^2.2",
+    "symfony/workflow": "^3.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Endeavor\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Endeavor\\Tests\\": "tests/unit/"
+    }
+  },
+  "scripts": {
+    "test": "./vendor/bin/codecept run -vvv"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "bin": [
+    "bin/endeavor"
+  ]
+}

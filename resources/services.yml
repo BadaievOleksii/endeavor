@@ -1,0 +1,94 @@
+parameters:
+  endeavor.app: 'example'
+  endeavor.rootdir: !php/const ROOT
+  endeavor.amqp.api.url: 'http://localhost:15672/api/'
+  endeavor.amqp.host: 'localhost'
+  endeavor.amqp.port: '5672'
+  endeavor.amqp.vhost: '/'
+  endeavor.amqp.user: 'root'
+  endeavor.amqp.pass: 'root'
+  endeavor.mysql.host: 'localhost'
+  endeavor.mysql.port: '3306'
+  endeavor.mysql.user: 'root'
+  endeavor.mysql.pass: 'root'
+services:
+  _defaults:
+      autowire: false
+      autoconfigure: true
+      public: true
+  Endeavor\RabbitMq\ManagementApi:
+      class: Endeavor\RabbitMq\ManagementApi
+      arguments:
+          $config:
+              user: '%endeavor.amqp.user%'
+              pass: '%endeavor.amqp.pass%'
+              url: '%endeavor.amqp.api.url%'
+  Endeavor\Workers\Scheduler\CronTab:
+    class: Endeavor\Workers\Scheduler\CronTab
+    arguments:
+      $lines:
+        - '* * * * * echo example1'
+        - '* * * * * echo example2'
+  Enqueue\AmqpBunny\AmqpConnectionFactory:
+      class: Enqueue\AmqpBunny\AmqpConnectionFactory
+      arguments:
+          $config:
+              host: '%endeavor.amqp.host%'
+              port: '%endeavor.amqp.port%'
+              vhost: '%endeavor.amqp.vhost%'
+              user: '%endeavor.amqp.user%'
+              pass: '%endeavor.amqp.pass%'
+              receive_method: 'basic_consume'
+  tasks.example.hp.products_list:
+      class: Endeavor\Tasks\DbQueryTask
+      properties:
+          query: "SELECT product_id FROM product p JOIN vendor v ON p.vendor_id=v.vendor_id WHERE v.name='Hewlett Packard Enterprise' AND p.product_id IS NOT NULL and p.product_id != '' LIMIT 1000;"
+          connectionConfig:
+              dsn: "mysql:host=%endeavor.mysql.host%;port=%endeavor.mysql.port%;dbname=content"
+              user: "%endeavor.mysql.user%"
+              pass: "%endeavor.mysql.pass%"
+              options: []
+  tasks.example.hp.soap_request:
+      class: Endeavor\Tasks\SoapMockTask
+      properties:
+          wsdl: 'https://api-csc-stg-sgw.ext.hpe.com/gw/hpit/egit/cpc.findbyproductsku.itg?singleWSDL'
+          method: 'GetPacksForGoodsProduct'
+  tasks.example.hp.insert_carepack:
+      class: Endeavor\Tasks\DbQueryTask
+      properties:
+          query: "INSERT INTO product_carepacks (product_id, vendor, carepack_id, xml_data) VALUES ({{product_id}}, {{vendor}}, {{carepack_id}}, {{{xml_data}}})"
+          connectionConfig:
+              dsn: "mysql:host=%endeavor.mysql.host%;port=%endeavor.mysql.port%;dbname=main"
+              user: "%endeavor.mysql.user%"
+              pass: "%endeavor.mysql.pass%"
+              options: []
+  pipelines.example.hp-wse:
+      class: Endeavor\Tasks\TaskPipeline
+      arguments:
+          $pipelineId: 'pipelines.cms.hp'
+          $stages:
+              - '@tasks.example.hp.products_list'
+              - '@tasks.example.hp.soap_request'
+              - '@tasks.example.hp.insert_carepack'
+
+
+  monolog.logger_prototype:
+      class: Symfony\Bridge\Monolog\Logger
+      abstract: true
+  monolog.logger:
+      parent: monolog.logger_prototype
+      autowire: false
+      autoconfigure: false
+      public: true
+      arguments:
+         $name: 'app'
+         $handlers: [ ]
+      calls:
+          - method: useMicrosecondTimestamps
+            arguments:
+                - true
+  logger:
+      alias: monolog.logger
+  Psr\Log\LoggerInterface:
+      alias: logger
+

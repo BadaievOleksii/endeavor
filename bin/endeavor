@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php' ] as $autoload) {
+    if (file_exists($autoload)) {
+        require_once $autoload;
+        break;
+    }
+}
+
+define('ROOT', dirname(__DIR__));
+
+$eventDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+$eventDispatcher->addSubscriber(new \Endeavor\Console\CommandEventListener());
+
+$application = new \Endeavor\Console\Application();
+$application->setDispatcher($eventDispatcher);
+$application->run();

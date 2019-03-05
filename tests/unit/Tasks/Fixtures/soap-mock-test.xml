@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Envelope>
+    <Body>
+        <GetPacksForGoodsProductResponse>
+            <GetPacksForGoodsProductResult>
+                <CountryCode>US</CountryCode>
+                <HwProductNumber>643086-B21</HwProductNumber>
+                <Locale>english</Locale>
+            </GetPacksForGoodsProductResult>
+        </GetPacksForGoodsProductResponse>
+    </Body>
+</Envelope>

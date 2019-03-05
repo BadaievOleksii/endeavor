@@ -1,0 +1,9 @@
+vendor
+.idea
+.git
+tests/_output/*
+tests/_support/_generated/*
+*.sublime-*
+resources/local.yml
+/composer.phar
+/runtime

@@ -1,0 +1,33 @@
+- hosts: localhost
+  vars:
+      php_enablerepo: 'remi-php56'
+      php_packages:
+          - php
+          - php-common
+          - php-cli
+          - php-fpm
+          - php-mbstring
+          - php-mcrypt
+          - php-mysqlnd
+          - php-json
+          - php-pdo
+          - php-gmp
+          - php-soap
+          - php-opcache
+          - php-xml
+          - php-gd
+          - php-process
+          - php-intl
+          - php-pear
+          - php-pecl-zip
+          - php-pecl-xdebug
+          - php-pecl-apcu
+      php_enable_php_fpm: false
+      php_enable_webserver: false
+      php_use_managed_ini: true
+
+      composer_add_to_path: true
+  roles:
+    - geerlingguy.repo-remi
+    - geerlingguy.php
+    - geerlingguy.composer

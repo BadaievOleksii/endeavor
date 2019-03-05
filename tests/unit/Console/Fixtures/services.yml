@@ -1,0 +1,17 @@
+parameters:
+  endeavor.app: 'endeavor-core'
+services:
+  _defaults:
+      autowire: false
+      autoconfigure: true
+      public: true
+
+  monolog.handlers.null:
+    class: Monolog\Handler\NullHandler
+  monolog.logger:
+    class: Monolog\Logger
+    arguments:
+      $name: 'app'
+      $handlers:
+        - '@monolog.handlers.null'
+
